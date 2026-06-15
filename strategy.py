@@ -1,22 +1,14 @@
-def calculate_moving_average(prices):
-    if not prices:
-        raise ValueError("price list cannot be empty")
-    return sum(prices) / len(prices)
+class MovingAverageStrategy:
+    def __init__(self, window: int = 5):
+        self.window = window
 
+    def calculate_moving_average(self, prices):
+        selected_prices = prices[-self.window :]
+        return sum(selected_prices) / len(selected_prices)
 
-def moving_average_strategy(current_price: int, price_history):
-    """
-    Generate a simple BUY / SELL / HOLD signal.
-
-    Rule:
-    - current price > moving average: BUY
-    - current price < moving average: SELL
-    - current price = moving average: HOLD
-    """
-    moving_average = calculate_moving_average(price_history)
-
-    if current_price > moving_average:
-        return "BUY", moving_average
-    if current_price < moving_average:
-        return "SELL", moving_average
-    return "HOLD", moving_average
+    def make_signal(self, current_price: int, moving_average: float) -> str:
+        if current_price > moving_average:
+            return "BUY"
+        if current_price < moving_average:
+            return "SELL"
+        return "HOLD"
